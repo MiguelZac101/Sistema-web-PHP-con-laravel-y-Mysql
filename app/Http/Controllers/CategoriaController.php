@@ -22,7 +22,7 @@ class CategoriaController extends Controller
             $categorias = DB::table('categoria')->where('nombre','LIKE','%'.$query.'%')
             ->where('condicion','=','1')
             ->orderBy('idcategoria','desc')
-            ->paginate(7);
+            ->paginate(1);
             
             $data = ["categorias"=>$categorias,"searchText"=>$query];
             
