@@ -16,6 +16,7 @@ class CategoriaController extends Controller
     public function __construct() {
         
     }
+    
     public function index(Request $request){
         if($request){
             $query = trim($request->get('searchText'));
@@ -24,14 +25,19 @@ class CategoriaController extends Controller
             ->orderBy('idcategoria','desc')
             ->paginate(1);
             
-            $data = ["categorias"=>$categorias,"searchText"=>$query];
+            $data = [
+                "categorias" => $categorias,
+                "searchText" => $query
+            ];
             
             return view('almacen.categoria.index',$data);
         }
     }
+    
     public function create(){
         return view("almacen.categoria.create");
     }
+    
     public function store(CategoriaFormRequest $request){
         $categoria = new Categoria;
         $categoria->nombre = $request->get('nombre');
@@ -41,14 +47,17 @@ class CategoriaController extends Controller
         return Redirect::to('almacen/categoria');
         
     }
+    
     public function show($id){
         $data = ["categoria"=>Categoria::findOrFail($id)];
         return view('almacen.categoria.show',$data);
     }
+    
     public function edit($id){
         $data = ["categoria"=>Categoria::findOrFail($id)];
         return view('almacen.categoria.edit',$data);
     }
+    
     public function update(CategoriaFormRequest $request,$id){
         $categoria = Categoria::findOrFail($id);
         $categoria->nombre = $request->get('nombre');
@@ -56,10 +65,12 @@ class CategoriaController extends Controller
         $categoria->update();
         return Redirect::to('almacen/categoria');
     }
+    
     public function destroy($id){
         $categoria = Categoria::findOrFail($id);
         $categoria->condicion = "0";
         $categoria->update();
         return Redirect::to('almacen/categoria');
     }
+    
 }
