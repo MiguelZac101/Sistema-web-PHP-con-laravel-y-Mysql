@@ -21,15 +21,16 @@ class ArticuloController extends Controller
     public function index(Request $request){
         if($request){
             $query = trim($request->get('searchText'));
-            $categorias = DB::table('articulo as a')
+            $articulos = DB::table('articulo as a')
             ->join('categoria as c','a.idcategoria','=','c.idcategoria')
             ->select('a.idarticulo','a.nombre','a.codigo','a.stock','c.nombre as categoria','a.descripcion','a.imagen','a.estado')
             ->where('a.nombre','LIKE','%'.$query.'%')
+            ->orwhere('a.codigo','LIKE','%'.$query.'%')
             ->orderBy('a.idarticulo','desc')
             ->paginate(1);
             
             $data = [
-                "articulos" => $articulo,
+                "articulos" => $articulos,
                 "searchText" => $query
             ];
             
@@ -39,7 +40,7 @@ class ArticuloController extends Controller
     
     public function create(){
         $categorias = DB::table('categoria')->where('condicion','=','1')->get();
-        return view("almacen.categoria.create",["categorias"=>$categorias]);
+        return view("almacen.articulo.create",["categorias"=>$categorias]);
     }
     
     public function store(ArticuloFormRequest $request){
@@ -53,7 +54,7 @@ class ArticuloController extends Controller
         
         if(Input::hasFile('imagen')){
             $file = Input::file('imagen');
-            $file->move(public_path().'imagenes/articulos/',$file->getClientOriginalName());
+            $file->move(public_path().'/imagenes/articulos/',$file->getClientOriginalName());
             $articulo->imagen = $file->getClientOriginalName();
         }
         
@@ -90,7 +91,7 @@ class ArticuloController extends Controller
         
         if(Input::hasFile('imagen')){
             $file = Input::file('imagen');
-            $file->move(public_path().'imagenes/articulos/',$file->getClientOriginalName());
+            $file->move(public_path().'/imagenes/articulos/',$file->getClientOriginalName());
             $articulo->imagen = $file->getClientOriginalName();
         }
         
@@ -100,7 +101,7 @@ class ArticuloController extends Controller
     
     public function destroy($id){
         $articulo = Articulo::findOrFail($id);
-        $articulo->condicion = "0";
+        $articulo->Estado = "Inactivo";
         $articulo->update();
         return Redirect::to('almacen/articulo');
     }
