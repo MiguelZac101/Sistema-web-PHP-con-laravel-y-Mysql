@@ -34,7 +34,7 @@ class IngresoController extends Controller
             ->where('i.num_comprobante','LIKE','%'.$query.'%')        
             ->orderBy('i.idingreso','desc')
             ->groupBy('i.idingreso','i.fecha_hora','p.nombre','i.tipo_comprobante','i.serie_comprobante','i.num_comprobante','i.impuesto','i.estado')
-            ->painate(1);
+            ->paginate(1);
             
             $data = [
                 "ingresos" => $ingresos,
@@ -116,7 +116,7 @@ class IngresoController extends Controller
         return view('compras.ingreso.show',$data);
     }
     
-    public function destroy(){
+    public function destroy($id){
         $ingreso = Ingreso::findOrFail($id);
         $ingreso->estado = 'C';
         $ingreso->update();
