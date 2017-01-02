@@ -141,12 +141,12 @@
     });
 
     var cont=0;
-    total=0;
-    subtotal=[];
+    var total=0;
+    var subtotal=[];
     $("#guardar").hide();
     
     function agregar(){
-        idarticulo = $("#pidarticulo").val();
+        var idarticulo = $("#pidarticulo").val();
         articulo = $("#pidarticulo option:selected").text();
         cantidad = $("#pcantidad").val();
         precio_compra = $("#pprecio_compra").val();
@@ -180,7 +180,7 @@
         }
     }
     function eliminar(index){
-        total = total-subotal[index];
+        total = total-subtotal[index];
         $("#total").html("S/."+total);
         $("#fila"+index).remove();
         evaluar();
