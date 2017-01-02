@@ -8,6 +8,9 @@
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.5 -->
         <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css">
+        
         <!-- Font Awesome -->
         <link rel="stylesheet" href="{{asset('css/font-awesome.css')}}">
         <!-- Theme style -->
@@ -17,6 +20,8 @@
         <link rel="stylesheet" href="{{asset('css/_all-skins.min.css')}}">
         <link rel="apple-touch-icon" href="{{asset('img/apple-touch-icon.png')}}">
         <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}">
+        
+          
 
     </head>
     <body class="hold-transition skin-blue sidebar-mini">
@@ -199,10 +204,15 @@
 
 <!-- jQuery 2.1.4 -->
 <script src="{{asset('js/jQuery-2.1.4.min.js')}}"></script>
+@stack('scripts')
 <!-- Bootstrap 3.3.5 -->
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('js/app.min.js')}}"></script>
+
+
 
 </body>
 </html>

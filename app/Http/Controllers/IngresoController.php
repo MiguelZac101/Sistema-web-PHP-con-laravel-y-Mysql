@@ -46,7 +46,7 @@ class IngresoController extends Controller
     }
     
     public function create(){
-        $persona = DB::table('persona')->where('tipo_persona','=','Proveedor')->get();
+        $personas = DB::table('persona')->where('tipo_persona','=','Proveedor')->get();
         $articulos = DB::table('articulo as art')
             ->select(DB::raw('CONCAT(art.codigo," ",art.nombre) AS articulo'),'art.idarticulo')
             ->where('art.estado','=','Activo')
