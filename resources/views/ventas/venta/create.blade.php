@@ -2,7 +2,7 @@
 @section('contenido')
 <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-        <h3>Nuevo Ingeso</h3>
+        <h3>Nuevo Venta</h3>
         @if(count($errors)>0)
         <div class="alert alert-danger">
             <ul>
@@ -16,13 +16,13 @@
         @endif
     </div>
 </div>       
-        {!!Form::open(array('url'=>'compras/ingreso','method'=>'POST','autocomplete'=>'off'))!!}
+        {!!Form::open(array('url'=>'ventas/venta','method'=>'POST','autocomplete'=>'off'))!!}
         {{Form::token()}}
         <div class="row">
             <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
                 <div class="form-group">
-                    <label for="proveedor">Prveedor</label>
-                    <select name="idproveedor" id="idproveedor" class="form-control selectpicker">                        
+                    <label for="proveeclientedor">Cliente</label>
+                    <select name="idcliente" id="idcliente" class="form-control selectpicker">                        
                         @foreach($personas as $persona)
                         <option value="{{$persona->idpersona}}">
                             {{$persona->nombre}}
@@ -63,7 +63,7 @@
                             <label>Artículo</label>
                             <select name="pidarticulo" class="form-control selectpicker" id="pidarticulo" data-live-search="true">
                                 @foreach($articulos as $articulo)
-                                <option value="{{$articulo->idarticulo}}">
+                                <option value="{{$articulo->idarticulo}}_{{$articulo->stock}}_{{$articulo->precio_promedio}}">
                                     {{$articulo->articulo}}
                                 </option>
                                 @endforeach
@@ -72,20 +72,27 @@
                     </div>
                     <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
                         <div class="form-group">
-                            <label for="cantidad">Cantidad</label>
+                            <label for="pcantidad">Cantidad</label>
                             <input type="number" name="pcantidad" id="pcantidad" class="form-control" placeholder="cantidad"/>                
                         </div>
                     </div>
-                    <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                     <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
                         <div class="form-group">
-                            <label for="precio_compra">Precio Compra</label>
-                            <input type="number" name="pprecio_compra" id="pprecio_compra" class="form-control" placeholder="P. compra"/>               
+                            <label for="pstock">Stock</label>
+                            <input type="number" name="pstock" id="pstock" class="form-control" placeholder="stock" disabled />                
                         </div>
                     </div>
+                  
                     <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
                         <div class="form-group">
                             <label for="precio_venta">Precio Venta</label>
-                            <input type="number" name="pprecio_venta" id="pprecio_venta" class="form-control" placeholder="P. Venta"/> 
+                            <input type="number" name="pprecio_venta" id="pprecio_venta" class="form-control" placeholder="P. Venta" disabled /> 
+                        </div>
+                    </div>
+                     <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
+                        <div class="form-group">
+                            <label for="pdescuento">Descuento</label>
+                            <input type="number" name="pdescuento" id="pdescuento" class="form-control" placeholder="P. Venta"/> 
                         </div>
                     </div>
                     <div class="col-lg-2 col-sm-2 col-md-2 col-xs-12">
@@ -99,10 +106,10 @@
                         <table id="detalles" class="table table-striped table-bordered table-condensed table-hover">
                             <thead style="background-color: #A9D0F5;">
                                 <th>Opciones</th>
-                                <th>Artículos</th>
+                                <th>Artículo</th>
                                 <th>Cantidad</th>
-                                <th>Precio Compra</th>
                                 <th>Precio Venta</th>
+                                <th>Descuento</th>
                                 <th>Subtotal</th>
                             </thead>
                             <tfoot>
@@ -111,7 +118,10 @@
                                 <th></th>
                                 <th></th>
                                 <th></th>
-                                <th><h4 id="total">S/. 0.00</h4></th>
+                                <th>
+                                    <h4 id="total">S/. 0.00</h4>
+                                    <input type="hidden" name="total_venta" id="total_venta">
+                                </th>
                             </tfoot>
                         </table>
                     </div>
@@ -144,6 +154,13 @@
     var total=0;
     var subtotal=[];
     $("#guardar").hide();
+    $("#pidarticulo").change(mostrarValores);
+
+    function mostrarValores(){
+        datosArticulo = document.getElementById('pidarticulo').value.split('_');
+        $('#pprecio_venta').val(datosArticulo[2]);
+        $('#pstock').val(datosArticulo[1]);
+    }
     
     function agregar(){
         var idarticulo = $("#pidarticulo").val();
