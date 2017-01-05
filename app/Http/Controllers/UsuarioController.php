@@ -22,7 +22,7 @@ class UsuarioController extends Controller
             $query = trim($request->get('searchText'));
             $usuarios = DB::table('users')->where('name','LIKE','%'.$query.'%')
             ->orderBy('id','desc')
-            ->paginate(1);
+            ->paginate(2);
             
             $data = [
                 'usuarios'=>$usuarios,
