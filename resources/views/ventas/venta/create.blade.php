@@ -163,30 +163,41 @@
     }
     
     function agregar(){
-        var idarticulo = $("#pidarticulo").val();
+        datosArticulo = document.getElementById('pidarticulo').value.split('_');
+
+        idarticulo = datosArticulo[0];
         articulo = $("#pidarticulo option:selected").text();
         cantidad = $("#pcantidad").val();
-        precio_compra = $("#pprecio_compra").val();
+        descuento = $("#pdescuento").val();
         precio_venta = $("#pprecio_venta").val();
+        stock = $("#pstock").val();
         
-        if(idarticulo!="" && cantidad!="" && cantidad>0 && precio_compra!="" && precio_venta!=""){
-            subtotal[cont] = (cantidad*precio_compra);
-            total = total+subtotal[cont];
+        if(idarticulo!="" && cantidad!="" && cantidad>0 && descuento!="" && precio_venta!=""){
+            if(stock>=cantidad){
+                subtotal[cont] = (cantidad*precio_venta-descuento);
+                total = total+subtotal[cont];
+                
+                var fila = '<tr class="selected" id="fila'+cont+'"><td><button type="button" class="btn btn-warning" onclick="eliminar('+cont+');">x</button></td><td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td><td><input type="number" name="cantidad[]" value="'+cantidad+'"></td><td><input type="number" name="precio_venta[]" value="'+precio_venta+'"></td><td><input type="number" name="descuento[]" value="'+descuento+'"></td><td>'+subtotal[cont]+'</td></tr>';
+                cont++;
+                limpiar();
+                $("#total").html("S/. "+total);
+                $("#total_venta").val(total);
+
+                evaluar();
+                $('#detalles').append(fila);
+            }else{
+                alert("la cantidad a vender supera el stock");
+            }
+
             
-            var fila = '<tr class="selected" id="fila'+cont+'"><td><button type="button" class="btn btn-warning" onclick="eliminar('+cont+');">x</button></td><td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td><td><input type="number" name="cantidad[]" value="'+cantidad+'"></td><td><input type="number" name="precio_compra[]" value="'+precio_compra+'"></td><td><input type="number" name="precio_venta[]" value="'+precio_venta+'"></td><td>'+subtotal[cont]+'</td></tr>';
-            cont++;
-            limpiar();
-            $("#total").html("S/. "+total);
-            evaluar();
-            $('#detalles').append(fila);
         }else{
-            alert("Error al ingresar el detalle del ingreso, revise los datos del articulo");
+            alert("Error al ingresar el detalle de la venta, revise los datos del articulo");
         }
     }
     
     function limpiar(){
         $("#pcantidad").val("");
-        $("#pprecio_compra").val("");
+        $("#pdescuento").val("");
         $("#pprecio_venta").val("");
     }
     function evaluar(){
@@ -199,6 +210,7 @@
     function eliminar(index){
         total = total-subtotal[index];
         $("#total").html("S/."+total);
+        $("#total_venta").val(total);
         $("#fila"+index).remove();
         evaluar();
     }

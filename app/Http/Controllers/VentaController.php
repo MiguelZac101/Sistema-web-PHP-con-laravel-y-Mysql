@@ -82,8 +82,8 @@ class VentaController extends Controller
             
             $cont = 0;
             while ($cont < count($idarticulo)){
-                $detalle = new DetalleIngreso();
-                $detalle->idventa = $ingreso->idventa;
+                $detalle = new DetalleVenta();
+                $detalle->idventa = $venta->idventa;
                 $detalle->idarticulo = $idarticulo[$cont];
                 $detalle->cantidad = $cantidad[$cont];
                 $detalle->descuento = $descuento[$cont];
@@ -102,7 +102,7 @@ class VentaController extends Controller
     
     public function show($id){
         
-         $ingreso = DB::table('venta as v')
+         $venta = DB::table('venta as v')
             ->join('persona as p','v.idcliente','=','p.idpersona')
             ->join('detalle_venta as dv','v.idventa','=','dv.idventa')
             ->select('v.idventa','v.fecha_hora','p.nombre','v.tipo_comprobante','v.serie_comprobante','v.num_comprobante','v.impuesto','v.estado','v.total_venta')
