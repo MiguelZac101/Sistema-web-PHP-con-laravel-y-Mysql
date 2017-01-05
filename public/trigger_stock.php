@@ -8,3 +8,14 @@ FOR EACH ROW BEGIN
 end
 //
 DELIMITER ;
+
+-----------------------
+
+DELIMITER //
+CREATE TRIGGER tr_updStockVenta AFTER INSERT ON detalle_venta
+FOR EACH ROW BEGIN 	
+	UPDATE articulo SET stock = stock - NEW.cantidad
+	WHERE articulo.idarticulo = NEW.idarticulo;
+end
+//
+DELIMITER ;
